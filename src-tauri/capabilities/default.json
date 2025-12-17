@@ -18,6 +18,13 @@
     "dialog:default",
     "fs:default",
     "fs:allow-write-text-file",
-    "deep-link:default"
+    "deep-link:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "http://**" },
+        { "url": "https://**" }
+      ]
+    }
   ]
 }
