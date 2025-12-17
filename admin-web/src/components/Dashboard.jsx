@@ -25,6 +25,21 @@ export default function Dashboard({ admin, token, onLogout }) {
     loadData()
   }, [activeTab])
 
+  // 初始加载账号列表（用于用户管理页面的分配功能）
+  useEffect(() => {
+    loadAccounts()
+  }, [])
+
+  const loadAccounts = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/admin/accounts`, { headers })
+      const data = await res.json()
+      if (res.ok) setAccounts(data.accounts || [])
+    } catch (e) {
+      console.error('加载账号列表失败:', e)
+    }
+  }
+
   const loadData = async () => {
     setLoading(true)
     try {
@@ -36,6 +51,8 @@ export default function Dashboard({ admin, token, onLogout }) {
         const res = await fetch(`${API_BASE_URL}/api/admin/users`, { headers })
         const data = await res.json()
         if (res.ok) setUsers(data.users || [])
+        // 同时刷新账号列表
+        loadAccounts()
       } else if (activeTab === 'accounts') {
         const res = await fetch(`${API_BASE_URL}/api/admin/accounts`, { headers })
         const data = await res.json()
